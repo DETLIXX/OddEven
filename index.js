@@ -15,7 +15,6 @@ var player2 = {
 
 var titleText = ".titleText";
 
-
  // Step1 : Set Name 
 $(".setName").click(function (e) { 
     e.preventDefault();
@@ -81,7 +80,7 @@ function CheckMarbles() {
         player1.ready = true;
     }
     else { 
-        alert(player1.playerName + " Dont have enough marbles!")
+        alert(player1.playerName + ` Dont have enough marbles!`)
     }
 
     if(player2.playerMarbles >= player2.playerNumber) { 
@@ -136,61 +135,69 @@ function RollMarbles() {
 
 function CheckResults(result, p1Result, p2Result) { 
 
+
+    console.log(`${p1Result} + ${p2Result}`);
     if(p1Result == p2Result) { 
-        console.log("Draw");
+        $(titleText).text("- DRAW -"); 
+        player1.playerMarbles = parseInt(player1.playerMarbles) + parseInt(player1.playerNumber);
+        player2.playerMarbles = parseInt(player2.playerMarbles) + parseInt(player2.playerNumber);
+    }
+    else {
+        var oddWinner;
+        var evenWinner;
+    
+        if(result == 0) { 
+            if(p1Result == 1) { 
+                console.log("p1 Odd Win");
+                oddWinner = player1.playerName;
+                player1.playerMarbles = parseInt(player1.playerMarbles) + parseInt(player1.playerNumber) + parseInt(player2.playerNumber);
+            }
+    
+            if(p2Result == 1) { 
+                console.log("p2 Odd Win");
+                oddWinner = player2.playerName;
+                player2.playerMarbles = parseInt(player2.playerMarbles) + parseInt(player2.playerNumber) + parseInt(player1.playerNumber);
+            }
+    
+            $(titleText).text(". Odd ." + "\n Winner is " + oddWinner); 
+        }
+        else if (result == 1) { 
+    
+            if(p1Result == 0) { 
+                console.log("p1 Even Win");
+                evenWinner = player1.playerName;
+                player1.playerMarbles = parseInt(player1.playerMarbles) + parseInt(player1.playerNumber) + parseInt(player2.playerNumber);
+            }
+    
+            if(p2Result == 0) { 
+                console.log("p2 Even Win");
+                evenWinner = player2.playerName;
+                player2.playerMarbles = parseInt(player2.playerMarbles) + parseInt(player2.playerNumber) + parseInt(player1.playerNumber);
+            }
+            $(titleText).text(": Even :" + "\n Winner is " + evenWinner); 
+        }
     }
 
+    CheckWinner();
 
-    console.log("P1 Marbles PRED: " + player1.playerMarbles);
-    console.log("P1 Stavka PRED: " + player1.playerNumber);
+}
 
-    console.log("P2 Marbles PRED: " + player2.playerMarbles);
-    console.log("P2 Stavka PRED: " + player2.playerNumber);
+function CheckWinner() { 
 
-    var oddWinner;
-    var evenWinner;
-
-    if(result == 0) { 
-        if(p1Result == 1) { 
-            console.log("p1 Odd Win");
-            oddWinner = player1.playerName;
-        }
-
-        if(p2Result == 1) { 
-            console.log("p2 Odd Win");
-            oddWinner = player2.playerName;
-        }
-
-        $(titleText).text(". Odd ." + "\n Winner is " + oddWinner); 
+    if(player1.playerMarbles == 20) { 
+        $(titleText).text("GAME END \n Winner is " + player1.playerName);
+        $(".rollBtn").css("display", "none");
     }
-    else if (result == 1) { 
-
-        if(p1Result == 0) { 
-            console.log("p1 Even Win");
-            evenWinner = player1.playerName;
-        }
-
-        if(p2Result == 0) { 
-            console.log("p2 Even Win");
-            evenWinner = player2.playerName;
-        }
-        $(titleText).text(": Even :" + "\n Winner is " + evenWinner); 
-
+    if(player2.playerMarbles == 20) { 
+        $(titleText).text("GAME END \n Winner is " + player2.playerName);
+        $(".rollBtn").css("display", "none");
     }
-    console.log(`${player1.playerMarbles} + ${player1.playerNumber} = ${player1.playerMarbles += player1.playerNumber}`);
-    console.log(`${player2.playerMarbles} + ${player2.playerNumber} = ${player2.playerMarbles += player2.playerNumber}`);
-
-    // console.log("P1 Marbles PO: " + player1.playerMarbles);
-    // console.log("P1 Stavka PO: " + player1.playerNumber);
-
-    // console.log("P2 Marbles PO : " + player2.playerMarbles);
-    // console.log("P2 Stavka PO: " + player2.playerNumber);
-
 
     $(".p1Marbles").text(player1.playerMarbles);
     $(".p2Marbles").text(player2.playerMarbles);
 
     $("#Player1").val("");
     $("#Player2").val("");
+
 
 }
